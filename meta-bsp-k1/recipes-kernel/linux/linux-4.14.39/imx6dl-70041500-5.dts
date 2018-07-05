@@ -1,0 +1,152 @@
+/*
+ * Copyright (c) Automata GmbH & Co. KG
+ * Author: Hichem Ben Fekih <hfekih@cannon.com>
+ */
+/dts-v1/;
+
+#include <dt-bindings/interrupt-controller/irq.h>
+
+#include "imx6dl.dtsi"
+#include "imx6qdl-cannon.dtsi"
+
+/ {
+	model = "CANNON Automata i.MX6dl 5";
+	compatible = "cannon,imx6dl-70041500", "fsl,imx6dl";
+};
+
+&iomuxc {
+	imx6qdl-wandboard {
+		pinctrl_hog_1: hoggrp-1 {
+			fsl,pins = <
+				MX6QDL_PAD_GPIO_0__CCM_CLKO1     	0x130b0
+				MX6QDL_PAD_GPIO_4__GPIO1_IO04		0x80000000	/* USDHC2 CD */
+				MX6QDL_PAD_SD4_DAT0__GPIO2_IO08     0x80000000	/* lvds backlight enable */
+
+				/* digital input */
+				MX6QDL_PAD_SD1_DAT3__GPIO1_IO21     0x4001b0b5 /* new */
+				MX6QDL_PAD_EIM_D17__GPIO3_IO17      0x4001b0b5 /* new */
+				MX6QDL_PAD_EIM_D23__GPIO3_IO23      0x4001b0b5 /* new */
+				MX6QDL_PAD_EIM_D20__GPIO3_IO20      0x4001b0b5 /* new */
+				MX6QDL_PAD_DI0_DISP_CLK__GPIO4_IO16 0x4001b0b5
+				MX6QDL_PAD_DI0_PIN15__GPIO4_IO17    0x4001b0b5
+				MX6QDL_PAD_DI0_PIN2__GPIO4_IO18     0x4001b0b5
+				MX6QDL_PAD_DI0_PIN3__GPIO4_IO19     0x4001b0b5
+
+				/* digital output */
+                MX6QDL_PAD_DISP0_DAT4__GPIO4_IO25   0x4001b0b5
+                MX6QDL_PAD_DISP0_DAT5__GPIO4_IO26   0x4001b0b5
+                MX6QDL_PAD_DISP0_DAT6__GPIO4_IO27   0x4001b0b5
+                MX6QDL_PAD_DISP0_DAT8__GPIO4_IO29   0x4001b0b5
+                MX6QDL_PAD_DISP0_DAT9__GPIO4_IO30   0x4001b0b5
+                MX6QDL_PAD_DISP0_DAT10__GPIO4_IO31  0x4001b0b5
+                MX6QDL_PAD_SD3_DAT6__GPIO6_IO18     0x4001b0b5
+                MX6QDL_PAD_SD3_DAT7__GPIO6_IO17     0x4001b0b5
+
+				/* digital output flags */
+				MX6QDL_PAD_SD1_DAT0__GPIO1_IO16     0x4001b0b5 /* new */
+				MX6QDL_PAD_SD1_DAT1__GPIO1_IO17     0x4001b0b5 /* new */
+				MX6QDL_PAD_SD1_CMD__GPIO1_IO18      0x4001b0b5 /* new */
+				MX6QDL_PAD_SD1_CLK__GPIO1_IO20      0x4001b0b5 /* new */
+
+				/* leds */
+				MX6QDL_PAD_DISP0_DAT12__GPIO5_IO06  0x4001b0b5
+                MX6QDL_PAD_GPIO_9__GPIO1_IO09       0x4001b0b5
+                MX6QDL_PAD_NANDF_CS2__GPIO6_IO15    0x4001b0b5 /* new */
+
+				/* dip */
+				MX6QDL_PAD_DISP0_DAT23__GPIO5_IO17  0x4001b0b5 /* new */
+				MX6QDL_PAD_SD3_DAT2__GPIO7_IO06     0x4001b0b5
+				MX6QDL_PAD_SD3_DAT3__GPIO7_IO07     0x4001b0b5
+				MX6QDL_PAD_EIM_DA4__GPIO3_IO04      0x4001b0b5
+				MX6QDL_PAD_EIM_DA7__GPIO3_IO07      0x4001b0b5
+
+				/* gpios */
+				MX6QDL_PAD_CSI0_VSYNC__GPIO5_IO21   0x4001b0b5
+				MX6QDL_PAD_CSI0_PIXCLK__GPIO5_IO18  0x4001b0b5
+				MX6QDL_PAD_KEY_COL1__GPIO4_IO08     0x4001b0b5
+
+				/* hw revision */
+				MX6QDL_PAD_DI0_PIN4__GPIO4_IO20     0x4001b0b5
+				MX6QDL_PAD_DISP0_DAT7__GPIO4_IO28   0x4001b0b5
+				MX6QDL_PAD_DISP0_DAT14__GPIO5_IO08  0x4001b0b5
+
+				/* an output */
+				MX6QDL_PAD_SD4_DAT4__GPIO2_IO12     0x4001b0b5
+				MX6QDL_PAD_SD4_DAT7__GPIO2_IO15     0x4001b0b5
+				MX6QDL_PAD_EIM_CS0__GPIO2_IO23      0x4001b0b5
+				MX6QDL_PAD_EIM_CS1__GPIO2_IO24      0x4001b0b5
+
+				/* an input data ready / select */
+				MX6QDL_PAD_EIM_BCLK__GPIO6_IO31     0x4001b0b5 /* new */
+				MX6QDL_PAD_DISP0_DAT22__GPIO5_IO16  0x4001b0b5 /* new */
+
+				/* leds */
+				MX6QDL_PAD_DISP0_DAT12__GPIO5_IO06  0x4001b0b5
+                MX6QDL_PAD_GPIO_9__GPIO1_IO09       0x4001b0b5
+                MX6QDL_PAD_NANDF_CS2__GPIO6_IO15    0x4001b0b5
+			>;
+		};
+	};
+};
+
+&ecspi3 {
+	status = "okay";
+	fram: fm25cl64b@0 {
+		mem-size = <4096>; //the mem size is actually 8192 but the driver supports for the moment only 4096
+		compatible = "fsl,fm25cl64b";
+		spi-max-frequency = <20000000>; //set to 20000000 for the target board
+		reg = <0>;
+		status = "okay";
+	};
+};
+
+&ecspi2 {
+	temp: max31865@0 {
+		compatible = "fsl,max31865";
+		spi-max-frequency = <5000000>;
+		reg = <0>;
+		data-ready-gpio = <&gpio6 31 0>;
+		canal-sel-gpio = <&gpio5 16 0>;
+		spi-cpha;
+		status = "okay";
+	};
+};
+
+&i2c1 {
+	clock-frequency = <100000>;
+	pinctrl-names = "default";
+	pinctrl-0 = <&pinctrl_i2c1>;
+	status = "okay";
+
+	rtc: pcf8523@68 {
+		compatible = "nxp,pcf8523";
+		reg = <0x68>;
+	};
+
+};
+
+&ldb {
+	status = "okay";
+	lvds-channel@0 {
+		crtc = "ipu1-di0";
+		fsl,data-mapping = "spwg";
+		fsl,data-width = <24>;
+		primary;
+		status = "okay";
+		
+		display-timings {
+			native-mode = <&timing0>;
+			timing0: tm101jdhg30 {
+				clock-frequency = <63000000>;
+				hactive = <1280>;
+				vactive = <800>;
+				hback-porch = <30>;
+				hfront-porch = <64>;
+				hsync-len = <2>;
+				vback-porch = <2>;
+				vfront-porch = <40>;
+				vsync-len = <2>;
+			};
+		};
+	};
+};
